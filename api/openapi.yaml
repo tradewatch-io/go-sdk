@@ -1,0 +1,1131 @@
+openapi: 3.1.0
+info:
+  description: Financial market data for Developers
+  title: tradewatch.io
+  version: 3.1.0
+servers:
+- description: Production API server
+  url: https://api.tradewatch.io
+security:
+- api_key_header: []
+- api_key_query: []
+tags:
+- description: "In this section, you can find methods that can be helpful to manage\
+    \ your API account."
+  name: account
+  x-displayName: Account
+- description: ""
+  name: currencies
+  x-displayName: Currencies
+- description: ""
+  name: crypto
+  x-displayName: Crypto
+- description: ""
+  name: indices
+  x-displayName: Indices
+- description: ""
+  name: stocks
+  x-displayName: Stocks
+- description: ""
+  name: commodities
+  x-displayName: Commodities
+paths:
+  /account/usage:
+    get:
+      description: Get the usage statistics of your API account
+      operationId: account_get_usage
+      parameters:
+      - explode: true
+        in: query
+        name: limit
+        required: false
+        schema:
+          maximum: 168
+          minimum: 1
+          nullable: true
+          type: integer
+        style: form
+      - explode: true
+        in: query
+        name: interval
+        required: false
+        schema:
+          $ref: '#/components/schemas/AccountUsageStatisticsInterval'
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              examples:
+                last-24-h:
+                  value:
+                    "1685541600":
+                      requests: 25
+                      data:
+                        request: 25372
+                        response: 23928708
+              schema:
+                $ref: '#/components/schemas/AccountUsageStatistics-Input'
+          description: Success
+        "422":
+          content:
+            application/json:
+              examples:
+                invalid query parameter:
+                  value:
+                    error:
+                      code: 422
+                      message: "limit: value is not a valid integer"
+              schema:
+                $ref: '#/components/schemas/ErrorResponseBody'
+          description: Validation error
+      summary: Usage statistics
+      tags:
+      - account
+  /currencies/convert/{from}/{to}:
+    get:
+      description: Convert one symbol to another
+      operationId: currencies_convert
+      parameters:
+      - explode: false
+        in: path
+        name: from
+        required: true
+        schema:
+          title: The symbol you would like to convert from.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: to
+        required: true
+        schema:
+          title: The symbol you would like convert to.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conversion'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Conversion
+      tags:
+      - currencies
+  /currencies/symbols/{symbol}:
+    get:
+      description: Get the last quote tick for the provided symbol.
+      operationId: currencies_get_quote
+      parameters:
+      - explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          title: Symbol
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: precision
+        required: false
+        schema:
+          default: 5
+          title: Precision
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastQuote'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Last Quote
+      tags:
+      - currencies
+  /currencies/symbols:
+    get:
+      description: Get list of available symbols
+      operationId: currencies_get_symbols
+      parameters:
+      - description: Page offset
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 50
+          description: Page offset
+          title: Size
+          type: integer
+          ge: 0
+        style: form
+      - description: Listing mode
+        explode: true
+        in: query
+        name: mode
+        required: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/SymbolsListMode'
+          description: Listing mode
+          title: Mode
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number
+          minimum: 1
+          title: Page
+          type: integer
+        style: form
+      - description: Cursor for the next page
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor for the next page
+          title: Cursor
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursorPage__T_Customized_SymbolsOutFull_'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Available Symbols
+      tags:
+      - currencies
+  /crypto/convert/{from}/{to}:
+    get:
+      description: Convert one symbol to another
+      operationId: crypto_convert
+      parameters:
+      - explode: false
+        in: path
+        name: from
+        required: true
+        schema:
+          title: The symbol you would like to convert from.
+          type: string
+        style: simple
+      - explode: false
+        in: path
+        name: to
+        required: true
+        schema:
+          title: The symbol you would like convert to.
+          type: string
+        style: simple
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoConversion'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Conversion
+      tags:
+      - crypto
+  /crypto/symbols/{symbol}:
+    get:
+      description: Get the last quote tick for the provided symbol.
+      operationId: crypto_get_quote
+      parameters:
+      - explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          title: Symbol
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: precision
+        required: false
+        schema:
+          default: 8
+          title: Precision
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastQuote'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Last Quote
+      tags:
+      - crypto
+  /crypto/symbols:
+    get:
+      description: Get list of available symbols
+      operationId: crypto_get_symbols
+      parameters:
+      - description: Page offset
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 50
+          description: Page offset
+          title: Size
+          type: integer
+          ge: 0
+        style: form
+      - description: Listing mode
+        explode: true
+        in: query
+        name: mode
+        required: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/SymbolsListMode'
+          description: Listing mode
+          title: Mode
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number
+          minimum: 1
+          title: Page
+          type: integer
+        style: form
+      - description: Cursor for the next page
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor for the next page
+          title: Cursor
+          type: string
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursorPage__T_Customized_SymbolsOutFull_'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Available Symbols
+      tags:
+      - crypto
+  /indices/symbols/{symbol}:
+    get:
+      description: Get the last quote tick for the provided symbol.
+      operationId: indices_get_quote
+      parameters:
+      - explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          title: Symbol
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: precision
+        required: false
+        schema:
+          default: 5
+          title: Precision
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastQuote'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Last Quote
+      tags:
+      - indices
+  /indices/symbols:
+    get:
+      description: Get list of available symbols
+      operationId: indices_get_symbols
+      parameters:
+      - description: Page offset
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 50
+          description: Page offset
+          title: Size
+          type: integer
+          ge: 0
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number
+          minimum: 1
+          title: Page
+          type: integer
+        style: form
+      - description: Cursor for the next page
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor for the next page
+          title: Cursor
+          type: string
+        style: form
+      - description: Listing mode
+        explode: true
+        in: query
+        name: mode
+        required: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/SymbolsListMode'
+          description: Listing mode
+          title: Mode
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursorPage__T_Customized_SymbolsOutFull_'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Available Symbols
+      tags:
+      - indices
+  /stocks/symbols/{symbol}:
+    get:
+      description: Get the last quote tick for the provided symbol.
+      operationId: stocks_get_quote
+      parameters:
+      - explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          title: Symbol
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: precision
+        required: false
+        schema:
+          default: 5
+          title: Precision
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastQuote'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Last Quote
+      tags:
+      - stocks
+  /stocks/symbols:
+    get:
+      description: Get list of available symbols
+      operationId: stocks_get_symbols
+      parameters:
+      - description: Page offset
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 50
+          description: Page offset
+          title: Size
+          type: integer
+          ge: 0
+        style: form
+      - explode: true
+        in: query
+        name: country
+        required: false
+        schema:
+          $ref: '#/components/schemas/Country'
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number
+          minimum: 1
+          title: Page
+          type: integer
+        style: form
+      - description: Cursor for the next page
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor for the next page
+          title: Cursor
+          type: string
+        style: form
+      - description: Listing mode
+        explode: true
+        in: query
+        name: mode
+        required: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/SymbolsListMode'
+          description: Listing mode
+          title: Mode
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursorPage__T_Customized_SymbolsOutFull_'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Available Symbols
+      tags:
+      - stocks
+  /stocks/countries:
+    get:
+      description: Get list of available countries
+      operationId: stock_get_countries
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CountriesList'
+          description: Successful Response
+      summary: Available Countries
+      tags:
+      - stocks
+  /commodities/symbols/{symbol}:
+    get:
+      description: Get the last quote tick for the provided symbol.
+      operationId: commodities_get_quote
+      parameters:
+      - explode: false
+        in: path
+        name: symbol
+        required: true
+        schema:
+          title: Symbol
+          type: string
+        style: simple
+      - explode: true
+        in: query
+        name: precision
+        required: false
+        schema:
+          default: 5
+          title: Precision
+          type: integer
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LastQuote'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Last Quote
+      tags:
+      - commodities
+  /commodities/symbols:
+    get:
+      description: Get list of available symbols
+      operationId: commodities_get_symbols
+      parameters:
+      - description: Page offset
+        explode: true
+        in: query
+        name: size
+        required: false
+        schema:
+          default: 50
+          description: Page offset
+          title: Size
+          type: integer
+          ge: 0
+        style: form
+      - explode: true
+        in: query
+        name: type
+        required: false
+        schema:
+          $ref: '#/components/schemas/CommodityType'
+        style: form
+      - description: Page number
+        explode: true
+        in: query
+        name: page
+        required: false
+        schema:
+          default: 1
+          description: Page number
+          minimum: 1
+          title: Page
+          type: integer
+        style: form
+      - description: Cursor for the next page
+        explode: true
+        in: query
+        name: cursor
+        required: false
+        schema:
+          description: Cursor for the next page
+          title: Cursor
+          type: string
+        style: form
+      - description: Listing mode
+        explode: true
+        in: query
+        name: mode
+        required: true
+        schema:
+          allOf:
+          - $ref: '#/components/schemas/SymbolsListMode'
+          description: Listing mode
+          title: Mode
+        style: form
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CursorPage__T_Customized_SymbolsOutFull_'
+          description: Successful Response
+        "422":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Available Symbols
+      tags:
+      - commodities
+  /commodities/types:
+    get:
+      description: Get list of available commodity types
+      operationId: commodities_get_types
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CommodityTypesList'
+          description: Successful Response
+      summary: Available Types
+      tags:
+      - commodities
+components:
+  schemas:
+    AccountUsageStatistics-Input:
+      title: AccountUsageStatistics
+      type: object
+    AccountUsageStatistics-Output:
+      title: AccountUsageStatistics
+      type: object
+    AccountUsageStatisticsInterval:
+      description: Data interval
+      enum:
+      - 1h
+      - 1d
+      title: AccountUsageStatisticsInterval
+      type: string
+    ApiUsageDataTransfer:
+      description: Data transfer
+      properties:
+        request:
+          title: Request
+          type: integer
+        response:
+          title: Response
+          type: integer
+      required:
+      - request
+      - response
+      title: ApiUsageDataTransfer
+    ApiUsageEntry:
+      description: Usage history entry
+      properties:
+        requests:
+          title: Requests
+          type: integer
+        data:
+          $ref: '#/components/schemas/ApiUsageDataTransfer'
+      required:
+      - data
+      - requests
+      title: ApiUsageEntry
+    ErrorDetails:
+      example:
+        code: 0
+        message: message
+      properties:
+        code:
+          title: Code
+          type: integer
+        message:
+          title: Message
+          type: string
+      required:
+      - code
+      - message
+      title: ErrorDetails
+    ErrorResponseBody:
+      example:
+        error:
+          code: 0
+          message: message
+      properties:
+        error:
+          $ref: '#/components/schemas/ErrorDetails'
+      required:
+      - error
+      title: ErrorResponseBody
+    Conversion:
+      example:
+        result: 1.4658129805029452
+        query:
+          amount: 0.09008281904610115
+          precision: 6
+          from: from
+          to: to
+        info:
+          rate: 1.23456
+          timestamp: 1704882030
+      properties:
+        info:
+          $ref: '#/components/schemas/ConversionInfo'
+        query:
+          $ref: '#/components/schemas/ConversionQuery'
+        result:
+          title: Result of the conversion
+          type: number
+      required:
+      - info
+      - query
+      - result
+      title: Conversion
+    ConversionInfo:
+      example:
+        rate: 1.23456
+        timestamp: 1704882030
+      properties:
+        timestamp:
+          example: 1704882030
+          title: Timestamp of a tick.
+          type: integer
+        rate:
+          example: 1.23456
+          title: Value of a tick.
+          type: number
+      required:
+      - rate
+      - timestamp
+      title: ConversionInfo
+    ConversionQuery:
+      example:
+        amount: 0.09008281904610115
+        precision: 6
+        from: from
+        to: to
+      properties:
+        from:
+          title: The symbol you would like to convert from.
+          type: string
+        to:
+          title: The symbol you would like convert to.
+          type: string
+        amount:
+          default: 10
+          minimum: 0.01
+          title: The amount to be converted.
+          type: number
+        precision:
+          default: 5
+          title: Precision
+          type: integer
+      required:
+      - from
+      - to
+      title: ConversionQuery
+    CursorPage__T_Customized_SymbolsOutFull_:
+      example:
+        next_page: next_page
+        total: 0
+        current_page_backwards: current_page_backwards
+        previous_page: previous_page
+        items:
+        - symbol: symbol
+          name: name
+        - symbol: symbol
+          name: name
+        current_page: current_page
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/SymbolsOutFull'
+          type: array
+        total:
+          nullable: true
+          type: integer
+        current_page:
+          nullable: true
+          type: string
+        current_page_backwards:
+          nullable: true
+          type: string
+        previous_page:
+          nullable: true
+          type: string
+        next_page:
+          nullable: true
+          type: string
+      required:
+      - items
+      title: "CursorPage[~T]Customized[SymbolsOutFull]"
+    HTTPValidationError:
+      example:
+        detail:
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+        - msg: msg
+          loc:
+          - ValidationError_loc_inner
+          - ValidationError_loc_inner
+          type: type
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          type: array
+      title: HTTPValidationError
+    LastQuote:
+      example:
+        symbol: symbol
+        ask: 1.23456
+        mid: 1.23456
+        bid: 1.23456
+        timestamp: 1704882030
+      properties:
+        symbol:
+          description: Symbol name
+          title: "One of the available symbols (see: /symbols)."
+          type: string
+        ask:
+          description: The ask price.
+          example: 1.23456
+          title: Value of a tick.
+          type: number
+        bid:
+          description: The bid price.
+          example: 1.23456
+          title: Value of a tick.
+          type: number
+        mid:
+          description: The mid price.
+          example: 1.23456
+          title: Value of a tick.
+          type: number
+        timestamp:
+          example: 1704882030
+          title: Timestamp of a tick.
+          type: integer
+      required:
+      - ask
+      - bid
+      - mid
+      - symbol
+      - timestamp
+      title: LastQuote
+    SymbolsListMode:
+      enum:
+      - full
+      - base
+      title: SymbolsListMode
+      type: string
+    SymbolsOutFull:
+      example:
+        symbol: symbol
+        name: name
+      properties:
+        symbol:
+          title: Symbol
+          type: string
+        name:
+          title: Name
+          type: string
+      required:
+      - name
+      - symbol
+      title: SymbolsOutFull
+    ValidationError:
+      example:
+        msg: msg
+        loc:
+        - ValidationError_loc_inner
+        - ValidationError_loc_inner
+        type: type
+      properties:
+        loc:
+          items:
+            $ref: '#/components/schemas/ValidationError_loc_inner'
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+      - loc
+      - msg
+      - type
+      title: ValidationError
+    CryptoConversion:
+      example:
+        result: 1.4658129805029452
+        query:
+          amount: 0.08008282904610114
+          precision: 6
+          from: from
+          to: to
+        info:
+          rate: 1.23456
+          timestamp: 1704882030
+      properties:
+        info:
+          $ref: '#/components/schemas/ConversionInfo'
+        query:
+          $ref: '#/components/schemas/CryptoConversionQuery'
+        result:
+          title: Result of the conversion
+          type: number
+      required:
+      - info
+      - query
+      - result
+      title: CryptoConversion
+    CryptoConversionQuery:
+      example:
+        amount: 0.08008282904610114
+        precision: 6
+        from: from
+        to: to
+      properties:
+        from:
+          title: The symbol you would like to convert from.
+          type: string
+        to:
+          title: The symbol you would like convert to.
+          type: string
+        amount:
+          default: 10
+          minimum: 0.000000010
+          title: The amount to be converted.
+          type: number
+        precision:
+          default: 8
+          title: Precision
+          type: integer
+      required:
+      - from
+      - to
+      title: CryptoConversionQuery
+    CountriesList:
+      description: A list of Countries
+      example:
+        items:
+        - symbol: symbol
+        - symbol: symbol
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/CountryObj'
+          type: array
+      required:
+      - items
+      title: CountriesList
+    Country:
+      description: The country associated with the symbol (see ISO 3166-1 alpha-2)
+      enum:
+      - fr
+      - us
+      - de
+      - nz
+      - nl
+      - uk
+      - es
+      - cn
+      - ch
+      - gr
+      - be
+      - pt
+      - it
+      - all
+      title: Country
+      type: string
+    CountryObj:
+      example:
+        symbol: symbol
+      properties:
+        symbol:
+          description: Country symbol
+          title: Symbol
+          type: string
+      required:
+      - symbol
+      title: CountryObj
+    CommodityType:
+      enum:
+      - agricultural
+      - energy
+      - metal
+      - all
+      title: CommodityType
+      type: string
+    CommodityTypeObj:
+      example:
+        symbol: symbol
+      properties:
+        symbol:
+          description: Commodity type name
+          title: Symbol
+          type: string
+      required:
+      - symbol
+      title: CommodityTypeObj
+    CommodityTypesList:
+      description: A list of commodity types
+      example:
+        items:
+        - symbol: symbol
+        - symbol: symbol
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/CommodityTypeObj'
+          type: array
+      required:
+      - items
+      title: CommodityTypesList
+    ValidationError_loc_inner:
+      anyOf:
+      - type: string
+      - type: integer
+  securitySchemes:
+    api_key_header:
+      description: Authentication via API key
+      in: header
+      name: api-key
+      type: apiKey
+    api_key_query:
+      description: Authentication via API key
+      in: query
+      name: api-key
+      type: apiKey
