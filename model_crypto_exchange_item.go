@@ -27,6 +27,10 @@ type CryptoExchangeItem struct {
 	Name string `json:"name"`
 	// Exchange established year
 	YearEstablished int32 `json:"year_established"`
+	// Exchange country
+	Country string `json:"country"`
+	// Exchange website URL
+	Website string `json:"website"`
 }
 
 type _CryptoExchangeItem CryptoExchangeItem
@@ -35,11 +39,13 @@ type _CryptoExchangeItem CryptoExchangeItem
 // This constructor will assign default values to properties that have it defined,
 // and makes sure properties required by API are set, but the set of arguments
 // will change when the set of required properties is changed
-func NewCryptoExchangeItem(id string, name string, yearEstablished int32) *CryptoExchangeItem {
+func NewCryptoExchangeItem(id string, name string, yearEstablished int32, country string, website string) *CryptoExchangeItem {
 	this := CryptoExchangeItem{}
 	this.Id = id
 	this.Name = name
 	this.YearEstablished = yearEstablished
+	this.Country = country
+	this.Website = website
 	return &this
 }
 
@@ -123,6 +129,54 @@ func (o *CryptoExchangeItem) SetYearEstablished(v int32) {
 	o.YearEstablished = v
 }
 
+// GetCountry returns the Country field value
+func (o *CryptoExchangeItem) GetCountry() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Country
+}
+
+// GetCountryOk returns a tuple with the Country field value
+// and a boolean to check if the value has been set.
+func (o *CryptoExchangeItem) GetCountryOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Country, true
+}
+
+// SetCountry sets field value
+func (o *CryptoExchangeItem) SetCountry(v string) {
+	o.Country = v
+}
+
+// GetWebsite returns the Website field value
+func (o *CryptoExchangeItem) GetWebsite() string {
+	if o == nil {
+		var ret string
+		return ret
+	}
+
+	return o.Website
+}
+
+// GetWebsiteOk returns a tuple with the Website field value
+// and a boolean to check if the value has been set.
+func (o *CryptoExchangeItem) GetWebsiteOk() (*string, bool) {
+	if o == nil {
+		return nil, false
+	}
+	return &o.Website, true
+}
+
+// SetWebsite sets field value
+func (o *CryptoExchangeItem) SetWebsite(v string) {
+	o.Website = v
+}
+
 func (o CryptoExchangeItem) MarshalJSON() ([]byte, error) {
 	toSerialize,err := o.ToMap()
 	if err != nil {
@@ -136,6 +190,8 @@ func (o CryptoExchangeItem) ToMap() (map[string]interface{}, error) {
 	toSerialize["id"] = o.Id
 	toSerialize["name"] = o.Name
 	toSerialize["year_established"] = o.YearEstablished
+	toSerialize["country"] = o.Country
+	toSerialize["website"] = o.Website
 	return toSerialize, nil
 }
 
@@ -147,6 +203,8 @@ func (o *CryptoExchangeItem) UnmarshalJSON(data []byte) (err error) {
 		"id",
 		"name",
 		"year_established",
+		"country",
+		"website",
 	}
 
 	allProperties := make(map[string]interface{})
