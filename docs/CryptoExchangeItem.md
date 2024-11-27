@@ -7,12 +7,14 @@ Name | Type | Description | Notes
 **Id** | **string** | Exchange identifier | 
 **Name** | **string** | Exchange name | 
 **YearEstablished** | **int32** | Exchange established year | 
+**Country** | **string** | Exchange country | 
+**Website** | **string** | Exchange website URL | 
 
 ## Methods
 
 ### NewCryptoExchangeItem
 
-`func NewCryptoExchangeItem(id string, name string, yearEstablished int32, ) *CryptoExchangeItem`
+`func NewCryptoExchangeItem(id string, name string, yearEstablished int32, country string, website string, ) *CryptoExchangeItem`
 
 NewCryptoExchangeItem instantiates a new CryptoExchangeItem object
 This constructor will assign default values to properties that have it defined,
@@ -85,6 +87,46 @@ and a boolean to check if the value has been set.
 `func (o *CryptoExchangeItem) SetYearEstablished(v int32)`
 
 SetYearEstablished sets YearEstablished field to given value.
+
+
+### GetCountry
+
+`func (o *CryptoExchangeItem) GetCountry() string`
+
+GetCountry returns the Country field if non-nil, zero value otherwise.
+
+### GetCountryOk
+
+`func (o *CryptoExchangeItem) GetCountryOk() (*string, bool)`
+
+GetCountryOk returns a tuple with the Country field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetCountry
+
+`func (o *CryptoExchangeItem) SetCountry(v string)`
+
+SetCountry sets Country field to given value.
+
+
+### GetWebsite
+
+`func (o *CryptoExchangeItem) GetWebsite() string`
+
+GetWebsite returns the Website field if non-nil, zero value otherwise.
+
+### GetWebsiteOk
+
+`func (o *CryptoExchangeItem) GetWebsiteOk() (*string, bool)`
+
+GetWebsiteOk returns a tuple with the Website field if it's non-nil, zero value otherwise
+and a boolean to check if the value has been set.
+
+### SetWebsite
+
+`func (o *CryptoExchangeItem) SetWebsite(v string)`
+
+SetWebsite sets Website field to given value.
 
 
 

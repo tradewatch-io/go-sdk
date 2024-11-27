@@ -1054,6 +1054,8 @@ components:
     CryptoExchangeItem:
       description: A cryptocurrency exchange
       example:
+        country: country
+        website: website
         name: name
         id: id
         year_established: 0
@@ -1070,19 +1072,33 @@ components:
           description: Exchange established year
           title: Year Established
           type: integer
+        country:
+          description: Exchange country
+          title: Country
+          type: string
+        website:
+          description: Exchange website URL
+          title: Website
+          type: string
       required:
+      - country
       - id
       - name
+      - website
       - year_established
       title: CryptoExchangeItem
     CryptoExchangesList:
       description: A list of cryptocurrency exchanges
       example:
         items:
-        - name: name
+        - country: country
+          website: website
+          name: name
           id: id
           year_established: 0
-        - name: name
+        - country: country
+          website: website
+          name: name
           id: id
           year_established: 0
       properties:
