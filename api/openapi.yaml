@@ -260,6 +260,20 @@ paths:
       summary: Conversion
       tags:
       - crypto
+  /crypto/exchanges:
+    get:
+      description: Get list of available cryptocurrency exchanges
+      operationId: crypto_get_exchanges
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptoExchangesList'
+          description: Successful Response
+      summary: Available Exchanges
+      tags:
+      - crypto
   /crypto/symbols/{symbol}:
     get:
       description: Get the last quote tick for the provided symbol.
@@ -1037,6 +1051,48 @@ components:
       - from
       - to
       title: CryptoConversionQuery
+    CryptoExchangeItem:
+      description: A cryptocurrency exchange
+      example:
+        name: name
+        id: id
+        year_established: 0
+      properties:
+        id:
+          description: Exchange identifier
+          title: Id
+          type: string
+        name:
+          description: Exchange name
+          title: Name
+          type: string
+        year_established:
+          description: Exchange established year
+          title: Year Established
+          type: integer
+      required:
+      - id
+      - name
+      - year_established
+      title: CryptoExchangeItem
+    CryptoExchangesList:
+      description: A list of cryptocurrency exchanges
+      example:
+        items:
+        - name: name
+          id: id
+          year_established: 0
+        - name: name
+          id: id
+          year_established: 0
+      properties:
+        items:
+          items:
+            $ref: '#/components/schemas/CryptoExchangeItem'
+          type: array
+      required:
+      - items
+      title: CryptoExchangesList
     CountriesList:
       description: A list of Countries
       example:

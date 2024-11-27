@@ -74,6 +74,7 @@ Class | Method | HTTP request | Description
 *CommoditiesAPI* | [**getQuote**](docs/CommoditiesAPI.md#getquote) | **Get** /commodities/symbols/{symbol} | Last Quote
 *CommoditiesAPI* | [**getSymbols**](docs/CommoditiesAPI.md#getsymbols) | **Get** /commodities/symbols | Available Symbols
 *CommoditiesAPI* | [**getTypes**](docs/CommoditiesAPI.md#gettypes) | **Get** /commodities/types | Available Types
+*CryptoAPI* | [**CryptoGetExchanges**](docs/CryptoAPI.md#cryptogetexchanges) | **Get** /crypto/exchanges | Available Exchanges
 *CryptoAPI* | [**convert**](docs/CryptoAPI.md#convert) | **Get** /crypto/convert/{from}/{to} | Conversion
 *CryptoAPI* | [**getQuote**](docs/CryptoAPI.md#getquote) | **Get** /crypto/symbols/{symbol} | Last Quote
 *CryptoAPI* | [**getSymbols**](docs/CryptoAPI.md#getsymbols) | **Get** /crypto/symbols | Available Symbols
@@ -103,6 +104,8 @@ Class | Method | HTTP request | Description
  - [CountryObj](docs/CountryObj.md)
  - [CryptoConversion](docs/CryptoConversion.md)
  - [CryptoConversionQuery](docs/CryptoConversionQuery.md)
+ - [CryptoExchangeItem](docs/CryptoExchangeItem.md)
+ - [CryptoExchangesList](docs/CryptoExchangesList.md)
  - [CursorPageTCustomizedSymbolsOutFull](docs/CursorPageTCustomizedSymbolsOutFull.md)
  - [ErrorDetails](docs/ErrorDetails.md)
  - [ErrorResponseBody](docs/ErrorResponseBody.md)

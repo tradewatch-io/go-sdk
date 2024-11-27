@@ -4,10 +4,72 @@ All URIs are relative to *https://api.tradewatch.io*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
+[**CryptoGetExchanges**](CryptoAPI.md#CryptoGetExchanges) | **Get** /crypto/exchanges | Available Exchanges
 [**convert**](CryptoAPI.md#convert) | **Get** /crypto/convert/{from}/{to} | Conversion
 [**getQuote**](CryptoAPI.md#getQuote) | **Get** /crypto/symbols/{symbol} | Last Quote
 [**getSymbols**](CryptoAPI.md#getSymbols) | **Get** /crypto/symbols | Available Symbols
 
+
+
+## CryptoGetExchanges
+
+> CryptoExchangesList CryptoGetExchanges(ctx).Execute()
+
+Available Exchanges
+
+
+
+### Example
+
+```go
+package main
+
+import (
+	"context"
+	"fmt"
+	"os"
+	openapiclient "github.com/tradewatch-io/go-sdk"
+)
+
+func main() {
+
+	configuration := openapiclient.NewConfiguration()
+	apiClient := openapiclient.NewAPIClient(configuration)
+	resp, r, err := apiClient.CryptoAPI.CryptoGetExchanges(context.Background()).Execute()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Error when calling `CryptoAPI.CryptoGetExchanges``: %v\n", err)
+		fmt.Fprintf(os.Stderr, "Full HTTP response: %v\n", r)
+	}
+	// response from `CryptoGetExchanges`: CryptoExchangesList
+	fmt.Fprintf(os.Stdout, "Response from `CryptoAPI.CryptoGetExchanges`: %v\n", resp)
+}
+```
+
+### Path Parameters
+
+This endpoint does not need any parameter.
+
+### Other Parameters
+
+Other parameters are passed through a pointer to a apiCryptoGetExchangesRequest struct via the builder pattern
+
+
+### Return type
+
+[**CryptoExchangesList**](CryptoExchangesList.md)
+
+### Authorization
+
+[api_key_query](../README.md#api_key_query), [api_key_header](../README.md#api_key_header)
+
+### HTTP request headers
+
+- **Content-Type**: Not defined
+- **Accept**: application/json
+
+[[Back to top]](#) [[Back to API list]](../README.md#documentation-for-api-endpoints)
+[[Back to Model list]](../README.md#documentation-for-models)
+[[Back to README]](../README.md)
 
 
 ## convert
